@@ -1,0 +1,24 @@
+name: Build Docker
+
+on:
+  push:
+    branches:
+      - "main"
+
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Dockerhub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME}}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - shell: bash
+        run: |
+          docker build . -t ranydale.github.io:latest
+          docker push  ranydale.github.io
+          
+          echo "The image has been pushed"
